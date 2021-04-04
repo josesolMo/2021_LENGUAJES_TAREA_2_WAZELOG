@@ -1,4 +1,7 @@
-%GRAFO/TAREA
+%------------GRAFO--------------
+%Doblemente dirigido
+
+%union(LugarA,LugarB,Peso).
 
 union('Coronado','Paracito',3).
 union('Paracito','Coronado',3).
@@ -72,6 +75,8 @@ union('Guadalupe','Coronado',2).
 
 %----------------------------------
 
+%Encuentra un camino entre dos nodos especificados
+%findminpath(Inicio,Final,Peso,Camino,Lista)
 findapath(X, Y, W, [X,Y], _) :- union(X, Y, W).
 findapath(X, Y, W, [X|P], V) :- \+ member(X, V),
                                  union(X, Z, W1),
@@ -80,6 +85,9 @@ findapath(X, Y, W, [X|P], V) :- \+ member(X, V),
 
 
 :-dynamic(solution/2).
+
+%Encuentra el camino más corto entre dos nodos especificados
+%findminpath(Inicio,Final,Peso,Camino)
 findminpath(X, Y, W, P) :- \+ solution(_, _),
                            findapath(X, Y, W1, P1, []),
                            assertz(solution(W1, P1)),
@@ -93,4 +101,15 @@ findminpath(X, Y, _, _) :- findapath(X, Y, W1, P1, []),
                            asserta(solution(W1, P1)),
                            fail.
 
+
 findminpath(_, _, W, P) :- solution(W,P), retract(solution(W,P)).
+
+%------------------------------------------------------------------
+
+%Preguntas de prueba
+
+%?- findminpath('Cartago','Hatillo',W,P).
+%?- findminpath('Coronado','Cartago',W,P).
+%?- findminpath('Guapiles','San Pedro',W,P).
+
+%------------------------------------------------------------------
