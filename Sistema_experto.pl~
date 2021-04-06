@@ -1,0 +1,10 @@
+% Hechos definidos para el BNF
+
+% Lugares
+
+lugar(["cartago"|S], S).
+lugar(["san jose"|S], S).
+lugar(["heredia"|S], S).
+lugar(["puntarenas"|S], S).
+lugar(["alajuela"|S], S).
+
