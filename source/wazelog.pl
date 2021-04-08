@@ -3,83 +3,60 @@
 
 %union(LugarA,LugarB,Peso).
 
-union('Coronado','Paracito',3).
-union('Paracito','Coronado',3).
+unions('Paraiso','Orosi',8).
+unions('Orosi','Paraiso',8).
 
-union('Paracito','Guapiles',8).
-union('Guapiles','Paracito',8).
+unions('Paraiso','Cachi',10).
+unions('Cachi','Paraiso',10).
 
-union('Guapiles','Siquirres',8).
-union('Siquirres','Guapiles',8).
+unions('Orosi','Cachi',12).
+unions('Cachi','Orosi',12).
 
-union('Siquirres','Turrialba',8).
-union('Turrialba','Siquirres',8).
+unions('Cartago','Paraiso',10).
 
-union('Turrialba','Cartago',8).
-union('Cartago','Turrialba',8).
+unions('Cartago','San Jose',20).
+unions('San Jose','Cartago',20).
 
-union('Cartago','Orosi',4).
-union('Orosi','Cartago',4).
+unions('Cartago','Tres Rios',8).
 
-union('Cartago','Taras',1).
-union('Taras','Cartago',1).
+unions('Tres Rios','San Jose',8).
 
-union('Taras','Tres Rios',2).
-union('Tres Rios','Taras',2).
+unions('Tres Rios','Pacayas',15).
+unions('Pacayas','Tres Rios',15).
 
-union('Tres Rios','San Pedro',4).
-union('San Pedro','Tres Rios',4).
+unions('Cartago','Pacayas',13).
+unions('Pacayas','Cartago',13).
 
-union('Tres Rios','Curridabat',3).
-union('Curridabat','Tres Rios',3).
+unions('Pacayas','Cervantes',8).
+unions('Cervantes','Pacayas',8).
 
-union('Curridabat','Zapote',2).
-union('Zapote','Curridabat',2).
+unions('Paraiso','Cervantes',4).
 
-union('Zapote','San Pedro',1).
-union('San Pedro','Zapote',1).
+unions('Cachi','Cervantes',7).
+unions('Cervantes','Cachi',7).
 
-union('Zapote','Desamparados',3).
-union('Desamparados','Zapote',3).
+unions('Cervantes','Juan Vinas',5).
 
-union('Zapote','San Sebastian',2).
-union('San Sebastian','Zapote',2).
+unions('Juan Vinas','Turrialba',4).
 
-union('Desamparados','San Sebastian',3).
-union('San Sebastian','Desamparados',3).
+unions('Turrialba','Pacayas',18).
 
-union('San Sebastian','Hatillo',2).
-union('Hatillo','San Sebastian',2).
+unions('Corralillo','San Jose',22).
+unions('San Jose','Corralillo',22).
 
-union('Hatillo','Pavas',4).
-union('Pavas','Hatillo',4).
+unions('Corralillo','Musgo Verde',6).
+unions('Musgo Verde','Corralillo',6).
 
-union('Hatillo','San Jose',2).
-union('San Jose','Hatillo',2).
-
-union('Pavas','San Jose',2).
-union('San Jose','Pavas',2).
-
-union('San Jose','San Pedro',2).
-union('San Pedro','San Jose',2).
-
-union('San Jose','Guadalupe',3).
-union('Guadalupe','San Jose',3).
-
-union('Guadalupe','San Pedro',2).
-union('San Pedro','Guadalupe',2).
-
-union('Coronado','Guadalupe',2).
-union('Guadalupe','Coronado',2).
-
+unions('Musgo Verde','Cartago',10).
+unions('Cartago','Musgo Verde',10).
 
 %----------------------------------
 
 %Encuentra un camino entre dos nodos especificados
 %findminpath(Inicio,Final,Peso,Camino,Lista)
-findapath(X, Y, W, [X,Y], _) :- union(X, Y, W).
+findapath(X, Y, W, [X,Y], _) :- unions(X, Y, W).
 findapath(X, Y, W, [X|P], V) :- \+ member(X, V),
-                                 union(X, Z, W1),
+                                 unions(X, Z, W1),
                                  findapath(Z, Y, W2, P, [X|V]),
                                  W is W1 + W2.
 
@@ -104,6 +81,12 @@ findminpath(X, Y, _, _) :- findapath(X, Y, W1, P1, []),
 
 findminpath(_, _, W, P) :- solution(W,P), retract(solution(W,P)).
 
+% Encuentra el camino más corto entre dos nodos especificados incluyendo
+% el tiempo de duracion.
+% findminpath_t(Inicio,Final,Peso,Tiempo,Camino)
+findminpath_t(X, Y, W, T, P) :- findminpath(X, Y, W, P), T is W * 2.
+
+
 %------------------------------------------------------------------
 
 %Preguntas de prueba
@@ -111,5 +94,8 @@ findminpath(_, _, W, P) :- solution(W,P), retract(solution(W,P)).
 %?- findminpath('Cartago','Hatillo',W,P).
 %?- findminpath('Coronado','Cartago',W,P).
 %?- findminpath('Guapiles','San Pedro',W,P).
+%
+%?- findminpath_t('Turrialba','Musgo Verde',W,T,P).
+%?- findminpath_t('Turrialba','Cartago',W,T,P).
 
 %------------------------------------------------------------------
