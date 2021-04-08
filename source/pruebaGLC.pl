@@ -1,8 +1,18 @@
 % Hechos definidos para el BNF
 
 %%%%% LUGARES %%%%%
-lugar(["tamarindo"|S], S).
-lugar(["heredia"|S], S).
+lugar(["turrialba"|S], S).
+lugar(["cachi"|S], S).
+lugar(["orosi"|S], S).
+lugar(["paraiso"|S], S).
+lugar(["cartago"|S], S).
+lugar(["cervantes"|S], S).
+lugar(["juan vinas"|S], S).
+lugar(["pacayas"|S], S).
+lugar(["tres rios"|S], S).
+lugar(["musgo verde"|S], S).
+lugar(["san jose"|S], S).
+lugar(["san jose"|S], S).
 % lugar(["la sabana"|S], S).
 % lugar(["pavas"|S], S).
 % lugar(["coronado"|S], S).

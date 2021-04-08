@@ -1,20 +1,30 @@
 %%%%%%%% %%%%% %%%%%%%% HECHOS %%%%%%%% %%%%% %%%%%%%%
 
 %%%%% LUGARES %%%%%
-lugar(["tamarindo"|S], S).
-lugar(["heredia"|S], S).
-% lugar(["la sabana"|S], S).
-% lugar(["pavas"|S], S).
-% lugar(["coronado"|S], S).
-% lugar(["santo domingo"|S], S).
+lugar(["turrialba"|S], S).
+lugar(["cachi"|S], S).
+lugar(["orosi"|S], S).
+lugar(["paraiso"|S], S).
+lugar(["cartago"|S], S).
+lugar(["cervantes"|S], S).
+lugar(["juan vinas"|S], S).
+lugar(["pacayas"|S], S).
+lugar(["tres rios"|S], S).
+lugar(["musgo verde"|S], S).
+lugar(["san jose"|S], S).
+lugar(["corralillo"|S], S).
 
 %%%%% RESPUESTAS %%%%%
 % posibles respuestas negativas.
 negativo("no").
 negativo("ninguno").
+negativo(["no"|S], S).
+negativo(["ninguno"|S], S).
 % posibles respuestas afirmativas.
 afirmativo("si").
 afirmativo("afirmativo").
+afirmativo(["si"|S], S).
+afirmativo(["afirmativo"|S], S).
 
 %%%%% PRONOMBRES %%%%%
 %pronombre(Tipo, Numero, Pronombre, Oracion).
@@ -23,27 +33,41 @@ pronombre(personal, plural,["nosotras"|S],S).
 pronombre(personal, plural,["nosotros"|S],S).
 pronombre(reflexivo, singular,["me"|S],S).
 pronombre(reflexivo, plural,["nos"|S],S).
+pronombre(posesivo, singular,["mi"|S],S).
+pronombre(posesivo, singular,["nuestro"|S],S).
 
 %%%%% ARTICULOS %%%%%
+%pronombre(Genero, Numero, Articulo, Oracion).
 articulo(masculino, singular, ["el"|S], S).
 articulo(masculino, singular, ["al"|S], S).
 articulo(masculino, plural, ["a los"|S], S).
 articulo(femenino, singular, ["a la"|S], S).
 articulo(femenino, plural, ["a las"|S], S).
 
+%%%%% SUSTANTIVO %%%%%
+%pronombre(Genero, Numero, Sustantivo, Oracion).
+sustantivo(masculino, singular,["destino"|S], S).
+sustantivo(masculino, singular,["lugar"|S], S).
+
+%%%%% ADJETIVO %%%%%
+%pronombre(Genero, Numero, Adjetivo, Oracion).
+adjetivo(masculino, singular,["destino"|S], S).
+adjetivo(masculino, singular,["instermedio"|S], S).
+
 %%%%% VERBOS %%%%%
 %verbo (Tipo, Numero, Verbo, Oracion).
-verbo(copulativo, _, ["estoy"|S], S).
+verbo(copulativo, _, ["es"|S], S).
+verbo(copulativo, singular, ["estoy"|S], S).
 
 verbo(infinitivo, _, ["ir"|S], S).
 verbo(infinitivo, _, ["llegar"|S], S).
 verbo(infinitivo, _, ["pasar"|S], S).
 
 verbo(intransitivo, singular, ["viajo"|S], S).
+verbo(intransitivo, singular, ["voy"|S], S).
 verbo(intransitivo, plural, ["vamos"|S], S).
 
 verbo(reflexivo, singular, ["dirijo"|S], S).
-verbo(reflexivo, singular, ["voy"|S], S).
 verbo(reflexivo, plural, ["dirigirnos"|S], S).
 verbo(reflexivo, singular, ["encuentro"|S], S).
 verbo(reflexivo, plural, ["encontramos"|S], S).
@@ -54,30 +78,27 @@ verbo(transitivo, plural, ["queremos"|S], S).
 
 %%%%% PREPOSICIONES %%%%%
 preposicion(finalidad, ["a"|S], S).
-preposicion(tiempo, ["hoy"|S], S).
-% preposicion(tiempo, ["manana"|S], S).
-% preposicion(tiempo, ["ahorita"|S], S).
-% preposicion(tiempo, ["ahora"|S], S).
 preposicion(lugar, ["a"|S], S).
-% preposicion(lugar, ["para"|S], S).
+preposicion(lugar, ["para"|S], S).
 preposicion(lugar, ["en"|S], S).
-% preposicion(lugar, ["cerca de"|S], S).
-% preposicion(lugar, ["alrededor de"|S], S).
-% preposicion(lugar, ["enfrente de"|S], S).
-% preposicion(lugar, ["junto a"|S], S).
+preposicion(lugar, ["cerca de"|S], S).
+preposicion(lugar, ["alrededor de"|S], S).
+
 
 
 %%%%%%%% %%%%% %%%%%%%% SINTAGMAS %%%%%%%% %%%%% %%%%%%%%
 
 %%%%%% SINTAGMA NOMINAL %%%%%%
-% % Sintagma nominal con pronombre personal solamente. (Ej: yo, nosotros)
-% sintagma_nominal(N, S0, S):-
-%     pronombre(personal, N, S0,S).
+% Sintagma nominal con pronombre personal solamente. (Ej: yo, nosotros)
+sintagma_nominal(N, S0, S):-
+    pronombre(posesivo, N, S0,S1),
+    sustantivo(_, N, S1,S).
 
-% % Sintagma nominal con pronombre personal y pronombre reflexivo. (Ej: yo me, nosotros nos)
-% sintagma_nominal(N, S0, S):-
-%     pronombre(personal, N, S0,S1),
-%     pronombre(reflexivo, N, S1,S).
+% Sintagma nominal con pronombre personal y pronombre reflexivo. (Ej: yo me, nosotros nos)
+sintagma_nominal(N, S0, S):-
+    pronombre(posesivo, N, S0,S1),
+    sustantivo(G, N, S1,S2), 
+    adjetivo(G, N, S2,S), S1\=S2.
 
 
 %%%%%% SINTAGMA VERBAL %%%%%%
@@ -100,11 +121,11 @@ preposicion(lugar, ["en"|S], S).
 %     preposicion(finalidad, S1, S2),
 %     verbo(infinitivo, _, S2, S).
 
-%%%%%% SINTAGMA PREPOSICIONAL %%%%%%
-% Sintagma preposicional con una preposicion de tiempo sola. (Ej: hoy)
-sintagma_preposicional(tiempo, S0, S):- 
-	preposicion(tiempo, S0, S).
 
+%%%%%% SINTAGMA PREPOSICIONAL %%%%%%
+% Sintagma preposicional con una preposicion y un lugar (Ej: heredia)
+sintagma_preposicional(lugar, S0, S):-
+    lugar(S0,S).
 % Sintagma preposicional con una preposicion y un lugar (Ej: a heredia)
 sintagma_preposicional(lugar, S0, S):-
 	preposicion(lugar, S0, S1),
@@ -118,13 +139,28 @@ sintagma_preposicional(N, S0, S):-
 
 %%%%%%%% %%%%% %%%%%%%% ORACIÓN %%%%%%%% %%%%% %%%%%%%%
 
-% Oración (Ej: Tamarindo.)
+% Oración (Ej: si)
 oracion(S0,S):-
-    lugar(S0,S).
+    afirmativo(S0,S).
+
+% Oración (Ej: no.)
+oracion(S0,S):-
+    negativo(S0,S).
 
 % Oración (Ej: En Tamarindo.)
 oracion(S0,S):-
     sintagma_preposicional(lugar,S0,S).
+
+% Oración (Ej: Si, a Tamarindo.)
+oracion(S0,S):-
+    afirmativo(S0,S1),
+    sintagma_preposicional(lugar,S1,S).
+
+% Oración (Ej: Mi lugar es Tamarindo.)
+oracion(S0,S):-
+    sintagma_nominal(_,S0,S1),
+    verbo(copulativo,_,S1,S2),
+    sintagma_preposicional(lugar,S2,S).
 
 % Oración (Ej: Estoy en Tamarindo.)
 oracion(S0,S):-
@@ -157,41 +193,9 @@ oracion(S0,S):-
     verbo(reflexivo, N, S2, S3),
     sintagma_preposicional(lugar,S3,S).
 
+%%%%%%%% %%%%% %%%%%%%% BACKGROUND %%%%%%%% %%%%% %%%%%%%%
 
-%%%%%%%%%%% FUNCIONALIDAD %%%%%%%%%%%
-
-% Revisa si es oración según lo estructurado en el BNF
-es_oracion(L):-
-	oracion(L, []), !.
-
-% Revisa si es un lugar
-es_lugar(L, Lugar):-
-	miembro(Lugar, L),
-	lugar(L, []), !.
-
-
-% Busca si el lugar existe.
-% Input: lista con cada palabra de la oración ingresada por el usuario.
-% Output: el lugar encontrado.
-destino(X, Lugar):-
-	atomo_a_string(X, Y),
-	eliminar_puntuacion(Y, Z),
-	buscar_lugar(Z, Lugar).
-
-% Buscar lugar en TODA la oración.
-% Input: lista con todas las palabras de la oración ingresada por el usuario.
-% Output: true en caso de encontrarlo.
-buscar_lugar([X|_], Lugar):-
-	nth0(0, L, X, []),
-	es_lugar(L, Lugar), !.
-
-buscar_lugar([_|Y], Lugar):-
-	buscar_lugar(Y, Lugar).
-
-%Funcion miembro.
-miembro(X, [X|_]):- !.
-miembro(X, [_| R]):- miembro(X,R).
-
+%%%%%% PARSEO DE INPUTS %%%%%%
 % Convierte cada palabra de un string en un elemento de la lista de salida.
 % Input: una lista con átomos 
 % Output: lista con los mismos átomos pero en forma de string al revés. Ejemplo: [foo, hola] a ["foo", "hola"]
@@ -212,30 +216,200 @@ eliminar_puntuacion(X, S5):-
 	delete(S3, ";", S4),
 	delete(S4, "?", S5).
 
+% Recibe la entrada y la devuelve parseada a lista de strings.
+% Input: un string.
+% Output: lista de strings sin signos de puntuacion.
+parseToList(X,W):-
+    atomo_a_string(X, Y),
+	eliminar_puntuacion(Y, Z),
+    invertir(Z,W).
 
-/** SE */
-start :-
-    nl,repeat,
-    /** Preguntas*/
-    writeln('Wazelog - Bienvenido a wazelog! Por Favor indiqueme donde se encuentra.'),
-    readln(Start),
-    lugar(Start, Lugar),
-    %revisa si esta o no, avisa si no esta y pregunta de nuevo.
-    display('Place', Lugar).
+%%%%%% BUSQUEDA EN LA BASE %%%%%%
 
-    writeln('Wazelog - Cual es su destino?'),
-    readln(End),
-    lugar(End, Lugar),
-    %revisa si esta o no, avisa si no esta y pregunta de nuevo.
-    display('Place', Lugar).
+%Funcion miembro.
+miembro(X, [X|_]):- !.
+miembro(X, [_| R]):- miembro(X,R).
 
-    writeln('Wazelog - Tiene algun destinointermedio?'),
+%Funcion invertir(lista, lista invertida).
+invertir(X,Y):- invertir(X,Y,[]). 
+invertir([],Z,Z).
+invertir([Head|Tail],Z, Collector):- invertir(Tail,Z,[Head|Collector]).
 
-    writeln('wazelog - Cual establecimiento'),
+% Revisa si es oración según lo estructurado en el BNF
+es_oracion(S):-
+	oracion(S, []), !.
+
+% Revisa si el imput recibido equivale a un hecho oracion.
+es_oracion_input(Input):-
+    parseToList(Input,S),
+    es_oracion(S).
+
+% Revisa si es una negacion
+es_negativo(N):-
+	negativo(N), !.
+
+% Revisa si es una afirmacion.
+es_afirmativo(Y):-
+	afirmativo(Y), !.
+
+% Revisa si es un lugar
+es_lugar(L, Lugar):-
+	miembro(Lugar, L),
+	lugar(L, []), !.
+
+
+% Busca si respuesta es afirmativa.
+% Input: lista con cada palabra de la oración ingresada por el usuario.
+% Output: true en caso de encontrar respuesta afirmativa.
+respuesta_afirmativa(X):-
+    parseToList(X,Z),
+    es_afirmativo(R),
+    miembro(R,Z),!.
+
+% Busca si respuesta es afirmativa.
+% Input: lista con cada palabra de la oración ingresada por el usuario.
+% Output: true en caso de encontrar respuesta afirmativa.
+respuesta_negativa(X):-
+    parseToList(X,Z),
+    es_negativo(R),
+    miembro(R,Z),!.
+
+% Busca si el lugar existe.
+% Input: lista con cada palabra de la oración ingresada por el usuario.
+% Output: el lugar encontrado.
+destino(X, Lugar):-
+	buscar_lugar(X, Lugar).
+% Buscar lugar en TODA la oración.
+% Input: lista con todas las palabras de la oración ingresada por el usuario.
+% Output: true en caso de encontrarlo.
+buscar_lugar([X|_], Lugar):-
+	nth0(0, L, X, []),
+	es_lugar(L, Lugar), !.
+
+buscar_lugar([_|Y], Lugar):-
+	buscar_lugar(Y, Lugar).
+
+%%%%%%%% %%%%% %%%%%%%% MENU %%%%%%%% %%%%% %%%%%%%%
+
+
+%%%%% Funciones Auxiliares %%%%%
+
+
+% consultar_lugar_de_destino(Lugar):-
+
+%     writeln('Wazelog - ¿Cual es su destino?'),
+%     readln(Input),
+%     display(Input),
+%     (verificar_oracion(Input) -> !;
+%     writeln('Disculpe, no entendí.'),
+%     consultar_lugar_de_destino(Lugar)),
+
+%     (destino(Input, Lugar) -> !;
+%         writeln('Lo sentimos, ese lugar se encuentra fuera de covertura.'),
+%         consultar_lugar_de_destino(Lugar)).
+
+% consultar_lugar_de_intermedio(Lugar):-
+
+%     writeln('Wazelog - ¿Tiene algun destino intermedio?'),
+%     readln(Input),
+
+%     (verificar_oracion(Input) -> !;
+%     writeln('Disculpe, no entendí.'),
+%     consultar_lugar_de_intermedio(Lugar))
+
+%     ->
+%         (respuesta_negativa(Input),!
+%     ;
+%         respuesta_afirmativa(Input),
+%         (destino(Input, Lugar) -> !;
+%             writeln('Aun no conocemos ese lugar.'),
+%             consultar_lugar_de_intermedio(Lugar)),
+%             nl,!
+%     ;
+%         respuesta_afirmativa(Input),
+%         consultar_ubicacion_del_lugar_intermedio(Lugar)).
     
-    writeln('wazelog - Donde se encuentrael establecimiento'),
+% consultar_ubicacion_del_lugar_intermedio(Lugar):-
+%     writeln('Wazelog - ¿Donde se encuentra el lugar de intermedio?'),
+%     readln(Input),
+%     (destino(Input, Lugar) -> !;
+%         writeln('Lo sentimos, no conocemos ese lugar.'),
+%         consultar_ubicacion_del_lugar_intermedio(Lugar)).
 
-    writeln('Wazelog - ¿Algun destino intermedio?'),
 
-    display('Fin').
+
+
+
+% wazelog():-
+
+        % nl,
+        % writeln('Welcome.'),
+        % repeat, 
+        % writeln('Print this message again? (yes/no)'),
+        % read(Ans),nl,
+        % (Ans == yes -> 
+        %   writeln('You selected yes.'), 
+        %   fail % backtrack to repeat
+        % ; writeln('You selected no.'),
+        %   ! % cut, we won't backtrack to repeat anymore
+        % ).
+
+    % nl,repeat,
+    % writeln('Wazelog - Bienvenido a wazelog!'),
     
+        % %% Preguntas
+        % consultar_lugar_de_inicio(LugarInicio),
+        % consultar_lugar_de_destino(LugarDestino),
+        % consultar_lugar_de_intermedio(UbicacionIntermedia),
+        % nl,
+        % display('Salida: '), display(LugarInicio),
+        % nl,
+        % display('Llegada: '), display(LugarDestino),
+        % nl,
+        % display('Parada en:'), display(UbicacionIntermedia),
+    
+        % display('Fin')
+        % -> wazelog().
+        
+
+
+
+
+
+
+
+
+
+
+
+
+% Revisa si el input recibido equivale a un hecho oracion.
+verificar_oracion(S):-
+    repeat,
+    readln(Ans),
+    (\+es_oracion_input(Ans) -> 
+        writeln('Wazelog - Lo siento, no entendí'), 
+        fail % backtrack to repeat
+        ; parseToList(Ans,S), ! % cut, we won't backtrack to repeat anymore
+    ),
+    display(Ans).
+
+verificar_destino(Ans, Lugar):-
+    (\+destino(Ans, Lugar) -> 
+        writeln('Lo sentimos, ese lugar se encuentra fuera de covertura.'),
+        fail  % backtrack to repeat
+        ; Ans, Lugar, ! % cut, we won't backtrack to repeat anymore
+    ).
+
+%%%%% WazeLog %%%%%
+% consultar_lugar_de_inicio(Lugar):-
+%     repeat,
+%     nl,
+%     writeln('Por favor indiqueme donde se encuentra.'),
+%     verificar_oracion(S),
+%     verificar_destino()
+%     (\+destino(S, Lugar) -> 
+%         writeln('Lo sentimos, ese lugar se encuentra fuera de covertura.'),
+%         fail  % backtrack to repeat
+%         ; display(Lugar), ! % cut, we won't backtrack to repeat anymore
+%     ).
