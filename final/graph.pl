@@ -95,7 +95,7 @@ findminpath_t(X, Y, W, T, P) :- findminpath(X, Y, W, P), T is W * 2.
 %?- findminpath('Coronado','Cartago',W,P).
 %?- findminpath('Guapiles','San Pedro',W,P).
 %
-?- findminpath_t('Turrialba','Musgo Verde',W,T,P).
-?- findminpath_t('Turrialba','Cartago',W,T,P).
+% ?- findminpath_t('Turrialba','Musgo Verde',W,T,P).
+% ?- findminpath_t('Turrialba','Cartago',W,T,P).
 
 %------------------------------------------------------------------

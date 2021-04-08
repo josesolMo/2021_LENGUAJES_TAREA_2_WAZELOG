@@ -14,6 +14,10 @@ lugar(["musgo verde"|S], S).
 lugar(["san jose"|S], S).
 lugar(["corralillo"|S], S).
 
+
+local("nombre",lugar).
+local("nombre",lugar).
+
 %%%%% RESPUESTAS %%%%%
 % posibles respuestas negativas.
 negativo("no").
@@ -340,7 +344,7 @@ buscar_lugar([_|Y], Lugar):-
 
 
 
-% wazelog():-
+% main():-
 
         % nl,
         % writeln('Welcome.'),
@@ -355,7 +359,7 @@ buscar_lugar([_|Y], Lugar):-
         % ).
 
     % nl,repeat,
-    % writeln('Wazelog - Bienvenido a wazelog!'),
+    % writeln('Wazelog:\tBienvenido a WazeLog la mejor lógica de llegar a su destino.\n\tPor Favor indíqueme donde se encuentra.'),
     
         % %% Preguntas
         % consultar_lugar_de_inicio(LugarInicio),
@@ -370,29 +374,22 @@ buscar_lugar([_|Y], Lugar):-
     
         % display('Fin')
         % -> wazelog().
-        
+    
 
+verificar_entrada(Input):-
+    verificar_oracion(Input),!.
 
+verificar_entrada(Input):-
+    writeln('Wazelog - Lo siento, no entendí'),
+    esperar_nueva_entrada(Input).
 
-
-
-
-
-
-
-
-
+esperar_nueva_entrada(Input):-
 
 % Revisa si el input recibido equivale a un hecho oracion.
 verificar_oracion(S):-
-    repeat,
     readln(Ans),
-    (\+es_oracion_input(Ans) -> 
-        writeln('Wazelog - Lo siento, no entendí'), 
-        fail % backtrack to repeat
-        ; parseToList(Ans,S), ! % cut, we won't backtrack to repeat anymore
-    ),
-    display(Ans).
+    es_oracion_input(Ans).
+
 
 verificar_destino(Ans, Lugar):-
     (\+destino(Ans, Lugar) -> 
