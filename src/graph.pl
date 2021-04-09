@@ -52,6 +52,10 @@ unions("cartago","musgo_verde",10).
 
 %----------------------------------
 
+% Corta la cabeza de una lista
+% cut(Lista,Cola).
+cut([_|Tail], Tail).
+
 %Encuentra un camino entre dos nodos especificados
 %findminpath(Inicio,Final,Peso,Camino,Lista)
 findapath(X, Y, W, [X,Y], _) :- unions(X, Y, W).
@@ -81,10 +85,23 @@ findminpath(X, Y, _, _) :- findapath(X, Y, W1, P1, []),
 
 findminpath(_, _, W, P) :- solution(W,P), retract(solution(W,P)).
 
-% Encuentra el camino m√°s corto entre dos nodos especificados incluyendo
-% el tiempo de duracion.
-% findminpath_t(Inicio,Final,Peso,Tiempo,Camino)
-findminpath_t(X, Y, W, T, P) :- findminpath(X, Y, W, P), T is W * 2.
+
+% Encuentra el camino m·s corto entre dos o m·s nodos especificados en
+% una lista.
+% findminpath_interm(Lista,Peso,Tiempo,Camino)
+findminpath_interm([X,Y],W,P) :- findminpath(X,Y,W,P).
+
+findminpath_interm([X,Y|Z],W,P) :- findminpath(X,Y,W1,P1),
+                                   findminpath_interm([Y|Z],W2,P2),
+                                   cut(P2,P3),
+                                   W is W1 + W2,
+                                   append(P1,P3,P).
+
+
+% Encuentra el camino m·s corto entre dos o m·s nodos especificados en
+% una lista, incluyendo el tiempo de duracion.
+% findminpath_t(Lista,Final,Peso,Tiempo,Camino)
+findminpath_t(X, W, T, P) :- findminpath_interm(X, W, P), T is W * 2.
 
 
 %------------------------------------------------------------------
