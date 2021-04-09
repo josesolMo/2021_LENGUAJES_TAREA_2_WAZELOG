@@ -3,25 +3,26 @@
 :-consult(background).
 :-consult(gramatica).
 :-consult(graph).
+ 
 
-s:-
-    writeln('Bienvenido a WazeLog la mejor lógica de llegar a su destino.
-        \nPor favor indíqueme dónde se encuentra.'),
+
+s():-  writeln('\n¡Bienvenido a WazeLog la mejor lógica de llegar a su destino!'),
+    writeln('Por favor indíqueme dónde se encuentra.'),
     ubicacion(Inicio),
 
     writeln('\nMuy bien, ¿Cuál es su destino?'),
     ubicacion(Destino),
-%%%%%%%%%%%%%
-    % intermedio(Intermedio),
-%%%%%%%%%%%%%
-    nl,
+
+    writeln('\n¿Tiene algún destino intermedio?'),
+    intermedio([], List),
+
+    nl, writeln('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
     write('Origen: '),
     writeln(Inicio),
     write('Destino: '),
     writeln(Destino),
     write('Intermedio: '),
-    writeln('PENDIENTE'),
-    % display(Intermedio), 
+    writeln(List),
     nl,
 
     getPath(Inicio,Destino,P,W,T,T2),
@@ -31,7 +32,8 @@ s:-
     writeln(T),
     writeln(T2).
 
-% %%%%%% SHORTEST PATH %%%%%%
+
+%%%%%% SHORTEST PATH %%%%%%
 getPath(Origin,Destination,Path,Weight,Time,Overtime):-
     findminpath_t(Origin,Destination,W,T,Path),
 
@@ -46,44 +48,6 @@ getPath(Origin,Destination,Path,Weight,Time,Overtime):-
     T2 is T*2,
     atom_concat('Tiempo con presa estimado: ', T2, Y),
     atom_concat(Y, ' min.', Overtime).
-
-% %%%%%% CONSULTAR LUGAR INTERMEDIO %%%%%%
-% intermedio(Lugar):-
-%     writeln('¿Tiene algún destino intermedio?'),
-%     respuesta(_, Lugar).
-
-% % mete el lugar a una lista. bueno, deberia xd pero no lo hace.
-% aux(Lugar, Lugares):-
-%     %meter en una lista
-%     Lugar=Lugares,
-%     intermedio(Lugares).
-
-% % si responde no, pues devuelvo el lugar,
-% respuesta(Input, Lugar):-
-%     respuesta_negativa(Input),!.
-
-% % si responde si.
-% respuesta(Input, Lugares):-
-%     respuesta_afirmativa(Input),
-%     writeln('¿Cuál?'),
-%     ubicacion(Lugar),
-%     aux(Lugar, Lugares),
-%     !.
-
-
-% % si responde con el lugar.
-% respuesta(Input, Lugares):-
-%     ubicacion(Input),
-%     aux(Input, Lugares),
-%     !.
-
-% create(L1):-read(Elem),create(Elem,L1).
-
-% create(-1,[]):-!. 
-% create(Elem,[Elem|Tail]):-read(Next),create(Next,Tail).
-
-% go:- write('Creating a list'),nl, write('Enter -1 to stop'),nl, create(L), write('List is:'), write(L).
-
 
 
 %%%%%% VALIDAR LUGAR %%%%%%
@@ -130,15 +94,15 @@ encontrar_lugar(Lugar,Local):-
 	!.
 
 %Hecho si fracasa.
-encontrar_lugar(Input, Lugar):-
+encontrar_lugar(_, Lugar):-
     error_lugar, %error.
-    encontrar_lugar_aux(Input, Lugar).
+    encontrar_lugar_aux(_, Lugar).
 
 %Hecho para preguntar otra vez hasta tener exito.
-encontrar_lugar_aux(Input, Lugar):-
-    validacion_entrada(Input),      %validar respuesta.
-	encontrar_lugar(Input, Lugar),!. 
-
+encontrar_lugar_aux(_, Lugar):-
+    validacion_lugar(Input),      %validar respuesta.
+    miembro(Input,Parsed),
+	encontrar_lugar(Parsed, Lugar).
 
 %%%%%% PRINTS %%%%%
 print_info_local(Local,Ciudad):-
@@ -147,8 +111,8 @@ print_info_local(Local,Ciudad):-
     writeln(B),
     validacion_ciudad(Ciudad),
 
-    write('El local está en: '),
-    writeln(Ciudad),
+    % write('El local está en: '),
+    % writeln(Ciudad),
 
     !.
 
@@ -158,12 +122,57 @@ print_info_establecimiento(Establecimiento, Ciudad):-
     writeln(B),
     validacion_local(Local),
 
-    write('El establecimiento se llama: '),
-    writeln(Local),
+    % write('El establecimiento se llama: '),
+    % writeln(Local),
     
     print_info_local(Local,Ciudad),
     !.
     
-% print_ruta(Origen,Intermedio,Destino)
 
 
+%%%%%% CONSULTAR LUGAR INTERMEDIO %%%%%%
+%Hechos de si una lista es vacia.
+list_empty([], true).
+list_empty([_|_], false).
+
+% concatena dos lista.
+concatenate(List1, List2, Result):-
+    append(List1, List2, Result).
+
+% append un elemento a una lista.
+list(L1,X,Z):- append(L1,[X],Z).
+% list(Head,[Head|Tail]):-list(Next,Tail).
+
+% si responde no, pues devuelvo el lugar,
+respuesta(Input):-respuesta_negativa(Input),fail.
+
+% si responde si.
+respuesta(Input):- respuesta_afirmativa(Input),!.
+
+% Funcion if then else, de respuesta.
+% Input: Una lista vacia si es la primera vez que se llama, o la lista de los lugares.
+% Output: [] si no se tiene lugares intermedios, lista con lugares si se tienen lugares intermedios.
+% intermedio([]).
+intermedio(L1, Places):-
+    validacion_si_o_no(Y),
+    parseToList(Y,Z),
+    ( respuesta(Z)
+    ->  
+        (writeln('\n¿Cuál?'),
+        ubicacion(City),
+        list(L1, City, X),         %agrega a la lista.
+        
+        % nl,
+        % display('X :  '),
+        % display(X),nl,
+        % display('Places :  '),
+        % display(Places),nl,
+
+        writeln('\n¿Alguna otra parada intermedia?'),
+        intermedio(X, Places))
+    ;   
+        concatenate(L1,[], Places)
+    ).
+
+
+:-s().

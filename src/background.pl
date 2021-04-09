@@ -21,11 +21,11 @@ es_oracion(S):-
 
 % Revisa si es una negacion
 es_negativo(N):-
-	negativo(N), !.
+	negativo(N,[]), !.
 
 % Revisa si es una afirmacion.
 es_afirmativo(Y):-
-	afirmativo(Y), !.
+	afirmativo(Y,[]), !.
 
 % Revisa si es una ciudad.
 es_ciudad(C, Ciudad):-
@@ -54,23 +54,32 @@ es_establecimiento(Establecimiento):-
 	miembro(Establecimiento, E),
 	establecimiento(E, []), !.
 
-% Busca si respuesta es afirmativa.
-% Input: lista con cada palabra de la oración ingresada por el usuario.
-% Output: true en caso de encontrar respuesta afirmativa.
-respuesta_afirmativa(R):-
-	validacion_entrada(X),
-    parseToList(X,Z),
-    es_afirmativo(R),
-    miembro(R,Z),!.
 
-% Busca si respuesta es afirmativa.
-% Input: lista con cada palabra de la oración ingresada por el usuario.
-% Output: true en caso de encontrar respuesta afirmativa.
+% Buscar respuesta afirmativa en toda la oracion.
+% Input: lista con todas las palabras de la oración ingresada por el usuario.
+% Output: true en caso de encontrar afirmacion.
+respuesta_afirmativa(X):-
+	parseToList(X,Y),
+	buscar_respuesta_afirmativa(Y).
+
+buscar_respuesta_afirmativa([X|_]):-
+	nth0(0, R, X, []),
+	es_afirmativo(R), !.
+buscar_respuesta_afirmativa([_|Y]):-
+	buscar_respuesta_afirmativa(Y).
+
+% Buscar respuesta negativa en toda la oracion.
+% Input: lista con todas las palabras de la oración ingresada por el usuario.
+% Output: true en caso de encontrar afirmacion.
 respuesta_negativa(X):-
-	validacion_entrada(X),
-    parseToList(X,Z),
-    es_negativo(R),
-    miembro(R,Z),!.
+	parseToList(X,Y),
+	buscar_respuesta_negativa(Y).
+
+buscar_respuesta_negativa([X|_]):-
+	nth0(0, R, X, []),
+	es_negativo(R), !.
+buscar_respuesta_negativa([_|Y]):-
+	buscar_respuesta_negativa(Y).
 
 
 % Busca si dentro de la oracion hay un local, establecimiento o ciudad existe.
@@ -190,6 +199,26 @@ validacion_entrada_aux(Input):-
 error_entrada:-
     writeln('\n- Lo siento, no entendí').
 
+%%%%%% VALIDAR SI O NO %%%%%%
+% Revisa si la entrada del usuario equivale a una oracion.
+%Hecho si tiene exito.
+validacion_si_o_no(Input):-
+	validacion_si_o_no_aux(Input),!.
+
+%Hecho si fracasa.
+validacion_si_o_no(Input):-
+	error_si_o_no,
+	validacion_si_o_no(Input).
+
+%validacion del input.
+validacion_si_o_no_aux(Input):-
+	readln(Ans),
+	parseToList(Ans,Input),
+    ( es_afirmativo(Input); es_negativo(Input) ).
+
+% Mensaje de error.
+error_si_o_no:-
+    writeln('\n- ¿Si o no?').
 
 %%%%%% VALIDAR LUGAR INGRESADO %%%%%%
 % Revisa si la entrada del usuario existe en la base de datos.
@@ -209,7 +238,7 @@ validacion_lugar_aux(Lugar):-
 
 % Mensaje de error.
 error_lugar:-
-    writeln('\nEse lugar no lo conozco. Ingrese otro lugar.').
+    writeln('\nEse lugar no lo conozco. \nIngrese otro, por favor.').
 
 
 %%%%%% VALIDAR CIUDAD INGRESADA %%%%%%
@@ -230,7 +259,7 @@ validacion_ciudad_aux(Ciudad):-
 
 % Mensaje de error.
 error_ciudad:-
-    writeln('\nEsa ciudad no la conozco. Ingrese otra ciudad.').
+    writeln('\nEsa ciudad no la conozco.\nIngrese otra, por favor.').
 
 %%%%%% VALIDAR LOCAL INGRESADO %%%%%%
 % Revisa si la entrada del usuario existe en la base de datos.

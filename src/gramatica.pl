@@ -2,13 +2,9 @@
 
 %%%%% RESPUESTAS %%%%%
 % posibles respuestas negativas.
-negativo("no").
-negativo("ninguno").
 negativo(["no"|S], S).
 negativo(["ninguno"|S], S).
 % posibles respuestas afirmativas.
-afirmativo("si").
-afirmativo("afirmativo").
 afirmativo(["si"|S], S).
 afirmativo(["afirmativo"|S], S).
 
@@ -72,9 +68,12 @@ verbo(reflexivo, plural, ["encontramos"|S], S).
 verbo(reflexivo, singular, ["ubico"|S], S).
 verbo(reflexivo, singular, ["ubica"|S], S).
 
+
 verbo(transitivo, singular, ["llama"|S], S).
 verbo(transitivo, singular, ["quiero"|S], S).
 verbo(transitivo, plural, ["queremos"|S], S).
+verbo(transitivo, singular, ["necesito"|S], S).
+verbo(transitivo, plural, ["necesitamos"|S], S).
 
 %%%%% PREPOSICIONES %%%%%
 %preposicion (Tipo, Preposicion, Oracion).
@@ -86,6 +85,7 @@ preposicion(lugar, ["en"|S], S).
 preposicion(lugar, ["cerca"|S], S).
 preposicion(lugar, ["alrededor"|S], S).
 preposicion(lugar, ["junto"|S], S).
+preposicion(lugar, ["por"|S], S).
 preposicion(conexion, ["a"|S], S).
 preposicion(conexion, ["de"|S], S).
 
@@ -158,6 +158,12 @@ sintagma_verbal(N,S0,S):-
     verbo(transitivo, N, S0, S1),
     verbo(infinitivo, _, S1, S2),
     sintagma_preposicional(N,S2,S).
+
+% Sintagma verbal. (Ej: Necesito pasar al supermercado.).
+sintagma_verbal(N,S0,S):-
+    verbo(transitivo, N, S0, S1),
+    verbo(infinitivo, _, S1, S2),
+    sintagma_nominal(N,S2,S).
 
 % Sintagma verbal. (Ej: voy a pasar).
 sintagma_verbal(N,S0,S):-
