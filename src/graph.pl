@@ -3,52 +3,52 @@
 
 %union(LugarA,LugarB,Peso).
 
-unions('Paraiso','Orosi',8).
-unions('Orosi','Paraiso',8).
+unions("paraiso","orosi",8).
+unions("orosi","paraiso",8).
 
-unions('Paraiso','Cachi',10).
-unions('Cachi','Paraiso',10).
+unions("paraiso","cachi",10).
+unions("cachi","paraiso",10).
 
-unions('Orosi','Cachi',12).
-unions('Cachi','Orosi',12).
+unions("orosi","cachi",12).
+unions("cachi","orosi",12).
 
-unions('Cartago','Paraiso',10).
+unions("cartago","paraiso",10).
 
-unions('Cartago','San Jose',20).
-unions('San Jose','Cartago',20).
+unions("cartago","san_jose",20).
+unions("san_jose","cartago",20).
 
-unions('Cartago','Tres Rios',8).
+unions("cartago","tres_rios",8).
 
-unions('Tres Rios','San Jose',8).
+unions("tres_rios","san_jose",8).
 
-unions('Tres Rios','Pacayas',15).
-unions('Pacayas','Tres Rios',15).
+unions("tres_rios","pacayas",15).
+unions("pacayas","tres_rios",15).
 
-unions('Cartago','Pacayas',13).
-unions('Pacayas','Cartago',13).
+unions("cartago","pacayas",13).
+unions("pacayas","cartago",13).
 
-unions('Pacayas','Cervantes',8).
-unions('Cervantes','Pacayas',8).
+unions("pacayas","cervantes",8).
+unions("cervantes","pacayas",8).
 
-unions('Paraiso','Cervantes',4).
+unions("paraiso","cervantes",4).
 
-unions('Cachi','Cervantes',7).
-unions('Cervantes','Cachi',7).
+unions("cachi","cervantes",7).
+unions("cervantes","cachi",7).
 
-unions('Cervantes','Juan Vinas',5).
+unions("cervantes","juan_vinas",5).
 
-unions('Juan Vinas','Turrialba',4).
+unions("juan_vinas","turrialba",4).
 
-unions('Turrialba','Pacayas',18).
+unions("turrialba","pacayas",18).
 
-unions('Corralillo','San Jose',22).
-unions('San Jose','Corralillo',22).
+unions("corralillo","san_jose",22).
+unions("san_jose","corralillo",22).
 
-unions('Corralillo','Musgo Verde',6).
-unions('Musgo Verde','Corralillo',6).
+unions("corralillo","musgo_verde",6).
+unions("musgo_verde","corralillo",6).
 
-unions('Musgo Verde','Cartago',10).
-unions('Cartago','Musgo Verde',10).
+unions("musgo_verde","cartago",10).
+unions("cartago","musgo_verde",10).
 
 %----------------------------------
 
@@ -91,11 +91,11 @@ findminpath_t(X, Y, W, T, P) :- findminpath(X, Y, W, P), T is W * 2.
 
 %Preguntas de prueba
 
-%?- findminpath('Cartago','Hatillo',W,P).
-%?- findminpath('Coronado','Cartago',W,P).
-%?- findminpath('Guapiles','San Pedro',W,P).
+%?- findminpath("cartago","Hatillo",W,P).
+%?- findminpath("Coronado","cartago",W,P).
+%?- findminpath("Guapiles","San Pedro",W,P).
 %
-?- findminpath_t('Turrialba','Musgo Verde',W,T,P).
-?- findminpath_t('Turrialba','Cartago',W,T,P).
+% ?- findminpath_t("turrialba","musgo_verde",W,T,P).
+% ?- findminpath_t("turrialba","cartago",W,T,P).
 
 %------------------------------------------------------------------

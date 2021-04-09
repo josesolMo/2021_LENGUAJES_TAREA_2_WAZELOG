@@ -19,7 +19,7 @@ local(["dota"|S], S).
 local(["el_coyol"|S], S).
 local(["bagaces"|S], S).
 
-%%%%% ESTABLECIMIENTOS %%%%%
+%%%% ESTABLECIMIENTOS %%%%%
 establecimiento(["optica"|S], S).
 establecimiento(["tienda"|S], S).
 establecimiento(["pulperia"|S], S).
