@@ -6,14 +6,14 @@
  
 
 
-s():-  writeln('\n¡Bienvenido a WazeLog la mejor lógica de llegar a su destino!'),
-    writeln('Por favor indíqueme dónde se encuentra.'),
+s():-  writeln('\n¡Bienvenido a WazeLog la mejor logica de llegar a su destino!'),
+    writeln('Por favor indiqueme donde se encuentra.'),
     ubicacion(Inicio),
 
-    writeln('\nMuy bien, ¿Cuál es su destino?'),
+    writeln('\nMuy bien, ¿Cual es su destino?'),
     ubicacion(Destino),
 
-    writeln('\n¿Tiene algún destino intermedio?'),
+    writeln('\n¿Tiene algun destino intermedio?'),
     intermedio([], List),
 
     nl, writeln('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
@@ -30,7 +30,7 @@ s():-  writeln('\n¡Bienvenido a WazeLog la mejor lógica de llegar a su destino
     append(L1,[Destino],L2),
 
     getPath(L2,P,W,T,T2),
-    write('Su ruta sería: '),
+    write('Su ruta seria: '),
     writeln(P),
     writeln(W),
     writeln(T),
@@ -41,7 +41,8 @@ s():-  writeln('\n¡Bienvenido a WazeLog la mejor lógica de llegar a su destino
 getPath(List_Places,Path,Weight,Time,Overtime):-
     findminpath_t(List_Places,W,T,Path),
 
-    % atom_concat('Su ruta sería: ',P, Path),
+    
+    atom_concat('Su ruta seria: ',P, Path),
 
     atom_concat('Distancia total del recorrido: ',W, Z),
     atom_concat(Z,' km.', Weight),
@@ -52,6 +53,7 @@ getPath(List_Places,Path,Weight,Time,Overtime):-
     T2 is T*2,
     atom_concat('Tiempo con presa estimado: ', T2, Y),
     atom_concat(Y, ' min.', Overtime).
+
 
 
 %%%%%% VALIDAR LUGAR %%%%%%
@@ -110,18 +112,18 @@ encontrar_lugar_aux(_, Lugar):-
 
 %%%%%% PRINTS %%%%%
 print_info_local(Local,Ciudad):-
-    atom_concat('\n¿Dónde se encuentra ',Local,A),
+    atom_concat('\n¿Donde se encuentra ',Local,A),
     atom_concat(A,'?',B),
     writeln(B),
     validacion_ciudad(Ciudad),
 
-    % write('El local está en: '),
+    % write('El local esta en: '),
     % writeln(Ciudad),
 
     !.
 
 print_info_establecimiento(Establecimiento, Ciudad):-
-    atom_concat('\n¿Cuál ', Establecimiento, A),
+    atom_concat('\n¿Cual ', Establecimiento, A),
     atom_concat(A, ' es?',B),
     writeln(B),
     validacion_local(Local),
@@ -160,7 +162,7 @@ intermedio(L1, Places):-
     parseToList(Y,Z),
     ( respuesta(Z)
     ->  
-        (writeln('\n¿Cuál?'),
+        (writeln('\n¿Cual?'),
         ubicacion(City),
         append(L1, [City], X),         %agrega a la lista.
         
