@@ -3,15 +3,19 @@
 %%%%% RESPUESTAS %%%%%
 % posibles respuestas negativas.
 negativo(["no"|S], S).
+negativo(["n"|S], S).
 negativo(["ninguno"|S], S).
 % posibles respuestas afirmativas.
 afirmativo(["si"|S], S).
+afirmativo(["s"|S], S).
 afirmativo(["afirmativo"|S], S).
 
 %%%%% ADVERBIOS %%%%
 adverbio(["no"|S], S).
+adverbio(["n"|S], S).
 adverbio(["ninguno"|S], S).
 adverbio(["si"|S], S).
+adverbio(["s"|S], S).
 adverbio(["afirmativo"|S], S).
 
 %%%%% PRONOMBRES %%%%%
@@ -199,55 +203,55 @@ sintagma_preposicional(N, S0, S):-
 
 %%%%%%%% %%%%% %%%%%%%% ORACIONES %%%%%%%% %%%%% %%%%%%%%
 
-% Oración (Ej: si, no.)
+% Oracion (Ej: si, no.)
 oracion(S0,S):-
     adverbio(S0,S).
 
-% Oración (Ej: pulperia)
+% Oracion (Ej: pulperia)
 oracion(S0,S):-
     sintagma_nominal(_,S0,S).
 
-% Oración (Ej: En Tamarindo.)
+% Oracion (Ej: En Tamarindo.)
 oracion(S0,S):-
     sintagma_preposicional(_,S0,S).
 
-% Oración (Ej: a la universidad.)
+% Oracion (Ej: a la universidad.)
 oracion(S0,S):-
     sintagma_nominal(_,S0,S1),
     sintagma_preposicional(_,S1,S).
 
 
-% Oración (Ej: ir a Tamarindo.)
+% Oracion (Ej: ir a Tamarindo.)
 oracion(S0,S):-
     sintagma_verbal(_,S0,S).
 
-% Oración (Ej: Si, la universidad.)
+% Oracion (Ej: Si, la universidad.)
 oracion(S0,S):-
     adverbio(S0,S1),
     sintagma_nominal(_,S1,S).
 
-% Oración (Ej: Si, a Tamarindo.)
+% Oracion (Ej: Si, a Tamarindo.)
 oracion(S0,S):-
     adverbio(S0,S1),
     sintagma_preposicional(_,S1,S).
 
-% Oración (Ej: Si, voy para Tamarindo.)
+% Oracion (Ej: Si, voy para Tamarindo.)
 oracion(S0,S):-
     adverbio(S0,S1),
     sintagma_verbal(_,S1,S).
 
-% Oración (Ej: Mi lugar es Tamarindo.)
+% Oracion (Ej: Mi lugar es Tamarindo.)
 oracion(S0,S):-
     sintagma_nominal(N,S0,S1),
     sintagma_verbal(N,S1,S).
 
-% Oración (Ej: Mi lugar en Tamarindo.)
+% Oracion (Ej: Mi lugar en Tamarindo.)
 oracion(S0,S):-
     sintagma_nominal(N,S0,S1),
     sintagma_preposicional(N,S1,S).
 
 
-% Oración (Ej: El ssupermercado se llama Walmart.)
+% Oracion (Ej: El ssupermercado se llama Walmart.)
 oracion(S0,S):-
     sintagma_nominal(_,S0,S1),
     sintagma_verbal(_,S1,S2),

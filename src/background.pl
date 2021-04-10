@@ -218,7 +218,7 @@ validacion_si_o_no_aux(Input):-
 
 % Mensaje de error.
 error_si_o_no:-
-    writeln('\n- ¿Si o no?').
+    writeln('\n- Si o no?').
 
 %%%%%% VALIDAR LUGAR INGRESADo %%%%%%
 % Revisa si la entrada del usuario existe en la base de datos.

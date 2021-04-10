@@ -12,10 +12,10 @@ s():-
     writeln('Por favor indiqueme donde se encuentra.'),
     ubicacion(Inicio),
 
-    writeln('\nMuy bien, ¿Cual es su destino?'),
+    writeln('\nMuy bien, Cual es su destino?'),
     ubicacion(Destino),
 
-    writeln('\n¿Tiene algun destino intermedio?'),
+    writeln('\nTiene algun destino intermedio? (s / n)'),
     intermedio([], List),
 
     nl, writeln('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
@@ -32,7 +32,7 @@ s():-
     append(L1,[Destino],L2),
 
     getPath(L2,P,W,T,T2),
-    write('Su ruta seria: '),
+    writeln('➤ Info: '),
     writeln(P),
     writeln(W),
     writeln(T),
@@ -42,35 +42,34 @@ s():-
 
 %%%%%% SHORTEST PATH %%%%%%
 getPath(List_Places,Path,Weight,Time,Overtime):-
-    findminpath_t(List_Places,W,T,Path),
+    findminpath_t(List_Places,W,T,P),
 
-    % parse_ruta(P,Path),
-    % atom_concat('Su ruta seria: ',Path),
+    parse_ruta(P, '', Path_string),
+    atom_concat('  • Su ruta seria: ',Path_string, Path),
 
-    atom_concat('Distancia total del recorrido: ',W, Z),
+    atom_concat('  • Distancia total del recorrido: ',W, Z),
     atom_concat(Z,' km.', Weight),
 
-    atom_concat('Tiempo promedio estimado: ', T, X),
+    atom_concat('  • Tiempo promedio estimado: ', T, X),
     atom_concat(X, ' min.', Time),
 
     T2 is T*2,
-    atom_concat('Tiempo con presa estimado: ', T2, Y),
+    atom_concat('  • Tiempo con presa estimado: ', T2, Y),
     atom_concat(Y, ' min.', Overtime).
 
 
 %%% PARSE RUTA %%%
-% parse_ruta(List, String):-
-%     parse_ruta_aux(List,"").
-% parse_ruta_aux([X,Y], String, String):-
-%     atom_concat()
-% parse_ruta_aux([H1,H2|T], String):-
-%     atom_concat(H1,H2,X),
-%     parse_ruta_aux([H2|T],X).
+parse_ruta(List, S, Output):-
+    parse_ruta_aux(List,S, Output).
 
-% parse_concat(S1, S2, X):-
-%     atom_concat(S1,S2,X).
+parse_ruta_aux([X], S, Output):-
+    atom_concat(S,X,Z),
+    atom_concat(Z,'.',Output).
 
-
+parse_ruta_aux([H|T], S, Output):-
+    atom_concat(S,H,X),
+    atom_concat(X,', ',Y),
+    parse_ruta_aux(T,Y, Output).
 
 
 %%%%%% VALIDAR LUGAR %%%%%%
@@ -129,7 +128,7 @@ encontrar_lugar_aux(_, Lugar):-
 
 %%%%%% PRINTS %%%%%
 print_info_local(Local,Ciudad):-
-    atom_concat('\n¿Donde se encuentra ',Local,A),
+    atom_concat('\nDonde se encuentra ',Local,A),
     atom_concat(A,'?',B),
     writeln(B),
     validacion_ciudad(Ciudad),
@@ -140,7 +139,7 @@ print_info_local(Local,Ciudad):-
     !.
 
 print_info_establecimiento(Establecimiento, Ciudad):-
-    atom_concat('\n¿Cual ', Establecimiento, A),
+    atom_concat('\nCual ', Establecimiento, A),
     atom_concat(A, ' es?',B),
     writeln(B),
     validacion_local(Local),
@@ -179,7 +178,7 @@ intermedio(L1, Places):-
     parseToList(Y,Z),
     ( respuesta(Z)
     ->  
-        (writeln('\n¿Cual?'),
+        (writeln('\nCual?'),
         ubicacion(City),
         append(L1, [City], X),         %agrega a la lista.
         
@@ -189,7 +188,7 @@ intermedio(L1, Places):-
         % display('Places :  '),
         % display(Places),nl,
 
-        writeln('\n¿Alguna otra parada intermedia?'),
+        writeln('\nAlguna otra parada intermedia? (s / n)'),
         intermedio(X, Places))
     ;   
         concatenate(L1,[], Places)
