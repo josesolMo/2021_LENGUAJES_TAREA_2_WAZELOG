@@ -8,7 +8,7 @@
 
 s():-  
     writeln('\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'),
-    writeln('\n¡Bienvenido a WazeLog la mejor logica de llegar a su destino!'),
+    writeln('\nBienvenido a WazeLog la mejor logica de llegar a su destino!'),
     writeln('Por favor indiqueme donde se encuentra.'),
     ubicacion(Inicio),
 
@@ -18,7 +18,7 @@ s():-
     writeln('\nTiene algun destino intermedio? (s / n)'),
     intermedio([], List),
 
-    nl, writeln('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
+    nl, writeln('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
     write('Origen: '),
     writeln(Inicio),
     write('Destino: '),
@@ -32,7 +32,7 @@ s():-
     append(L1,[Destino],L2),
 
     getPath(L2,P,W,T,T2),
-    writeln('➤ Info: '),
+    writeln('> Info: '),
     writeln(P),
     writeln(W),
     writeln(T),
@@ -45,16 +45,16 @@ getPath(List_Places,Path,Weight,Time,Overtime):-
     findminpath_t(List_Places,W,T,P),
 
     parse_ruta(P, '', Path_string),
-    atom_concat('  • Su ruta seria: ',Path_string, Path),
+    atom_concat('  * Su ruta seria: ',Path_string, Path),
 
-    atom_concat('  • Distancia total del recorrido: ',W, Z),
+    atom_concat('  * Distancia total del recorrido: ',W, Z),
     atom_concat(Z,' km.', Weight),
 
-    atom_concat('  • Tiempo promedio estimado: ', T, X),
+    atom_concat('  * Tiempo promedio estimado: ', T, X),
     atom_concat(X, ' min.', Time),
 
     T2 is T*2,
-    atom_concat('  • Tiempo con presa estimado: ', T2, Y),
+    atom_concat('  * Tiempo con presa estimado: ', T2, Y),
     atom_concat(Y, ' min.', Overtime).
 
 
@@ -146,8 +146,9 @@ print_info_establecimiento(Establecimiento, Ciudad):-
 
     % write('El establecimiento se llama: '),
     % writeln(Local),
-    
-    print_info_local(Local,Ciudad),
+    atom_concat(Establecimiento, " ",X),
+    atom_concat(X, Local,Y),
+    print_info_local(Y,Ciudad),
     !.
     
 
