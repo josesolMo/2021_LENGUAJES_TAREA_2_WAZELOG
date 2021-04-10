@@ -25,7 +25,11 @@ s():-  writeln('\n¡Bienvenido a WazeLog la mejor lógica de llegar a su destino
     writeln(List),
     nl,
 
-    getPath(Inicio,Destino,P,W,T,T2),
+    %Realizar una sola lista.
+    append([Inicio],List,L1),
+    append(L1,[Destino],L2),
+
+    getPath(L2,P,W,T,T2),
     write('Su ruta sería: '),
     writeln(P),
     writeln(W),
@@ -34,8 +38,8 @@ s():-  writeln('\n¡Bienvenido a WazeLog la mejor lógica de llegar a su destino
 
 
 %%%%%% SHORTEST PATH %%%%%%
-getPath(Origin,Destination,Path,Weight,Time,Overtime):-
-    findminpath_t(Origin,Destination,W,T,Path),
+getPath(List_Places,Path,Weight,Time,Overtime):-
+    findminpath_t(List_Places,W,T,Path),
 
     % atom_concat('Su ruta sería: ',P, Path),
 
@@ -135,12 +139,10 @@ print_info_establecimiento(Establecimiento, Ciudad):-
 list_empty([], true).
 list_empty([_|_], false).
 
-% concatena dos lista.
+% concatena dos listas.
 concatenate(List1, List2, Result):-
     append(List1, List2, Result).
 
-% append un elemento a una lista.
-list(L1,X,Z):- append(L1,[X],Z).
 % list(Head,[Head|Tail]):-list(Next,Tail).
 
 % si responde no, pues devuelvo el lugar,
@@ -160,7 +162,7 @@ intermedio(L1, Places):-
     ->  
         (writeln('\n¿Cuál?'),
         ubicacion(City),
-        list(L1, City, X),         %agrega a la lista.
+        append(L1, [City], X),         %agrega a la lista.
         
         % nl,
         % display('X :  '),
