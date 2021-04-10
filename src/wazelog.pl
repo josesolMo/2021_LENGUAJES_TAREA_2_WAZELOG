@@ -6,7 +6,9 @@
  
 
 
-s():-  writeln('\n¡Bienvenido a WazeLog la mejor logica de llegar a su destino!'),
+s():-  
+    writeln('\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'),
+    writeln('\n¡Bienvenido a WazeLog la mejor logica de llegar a su destino!'),
     writeln('Por favor indiqueme donde se encuentra.'),
     ubicacion(Inicio),
 
@@ -34,15 +36,16 @@ s():-  writeln('\n¡Bienvenido a WazeLog la mejor logica de llegar a su destino!
     writeln(P),
     writeln(W),
     writeln(T),
-    writeln(T2).
+    writeln(T2),
+    s.
 
 
 %%%%%% SHORTEST PATH %%%%%%
 getPath(List_Places,Path,Weight,Time,Overtime):-
     findminpath_t(List_Places,W,T,Path),
 
-    
-    atom_concat('Su ruta seria: ',P, Path),
+    % parse_ruta(P,Path),
+    % atom_concat('Su ruta seria: ',Path),
 
     atom_concat('Distancia total del recorrido: ',W, Z),
     atom_concat(Z,' km.', Weight),
@@ -53,6 +56,20 @@ getPath(List_Places,Path,Weight,Time,Overtime):-
     T2 is T*2,
     atom_concat('Tiempo con presa estimado: ', T2, Y),
     atom_concat(Y, ' min.', Overtime).
+
+
+%%% PARSE RUTA %%%
+% parse_ruta(List, String):-
+%     parse_ruta_aux(List,"").
+% parse_ruta_aux([X,Y], String, String):-
+%     atom_concat()
+% parse_ruta_aux([H1,H2|T], String):-
+%     atom_concat(H1,H2,X),
+%     parse_ruta_aux([H2|T],X).
+
+% parse_concat(S1, S2, X):-
+%     atom_concat(S1,S2,X).
+
 
 
 

@@ -1,4 +1,4 @@
-%------------GRAFO--------------
+%------------GRaFO--------------
 %Doblemente dirigido
 
 %union(LugarA,LugarB,Peso).
@@ -67,7 +67,7 @@ findapath(X, Y, W, [X|P], V) :- \+ member(X, V),
 
 :-dynamic(solution/2).
 
-%Encuentra el camino mÃ¡s corto entre dos nodos especificados
+%Encuentra el camino mas corto entre dos nodos especificados
 %findminpath(Inicio,Final,Peso,Camino)
 findminpath(X, Y, W, P) :- \+ solution(_, _),
                            findapath(X, Y, W1, P1, []),
@@ -86,7 +86,7 @@ findminpath(X, Y, _, _) :- findapath(X, Y, W1, P1, []),
 findminpath(_, _, W, P) :- solution(W,P), retract(solution(W,P)).
 
 
-% Encuentra el camino más corto entre dos o más nodos especificados en
+% Encuentra el camino mï¿½s corto entre dos o mï¿½s nodos especificados en
 % una lista.
 % findminpath_interm(Lista,Peso,Tiempo,Camino)
 findminpath_interm([X,Y],W,P) :- findminpath(X,Y,W,P).
@@ -98,7 +98,7 @@ findminpath_interm([X,Y|Z],W,P) :- findminpath(X,Y,W1,P1),
                                    append(P1,P3,P).
 
 
-% Encuentra el camino más corto entre dos o más nodos especificados en
+% Encuentra el camino mï¿½s corto entre dos o mï¿½s nodos especificados en
 % una lista, incluyendo el tiempo de duracion.
 % findminpath_t(Lista,Final,Peso,Tiempo,Camino)
 findminpath_t(X, W, T, P) :- findminpath_interm(X, W, P), T is W * 2.
